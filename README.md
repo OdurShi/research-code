@@ -1,15 +1,12 @@
-# Research code
+# Code
 
-A collection of implementations and experiment artifacts for learning and experimentation.
+Implementations and experiments for learning and research.
 
-| Project | Description |
-| --- | --- |
-| [Cell-free AP deployment](projects/cell-free-isac-ap-deployment) | Saved parameters, checkpoints, logs, and visualizations for access-point placement experiments |
-| [MRIME](projects/mrime) | MATLAB optimization algorithms and benchmark experiments |
-| [SBLS](projects/sbls) | Sequential label-space selection with configuration files, examples, and evaluation tools |
-| [QCV](projects/qcv) | Question compilation, calibration, selection, and decoding utilities |
-| [4DReSplat](projects/4dresplat) | Tools for language-guided segmentation in dynamic Gaussian scenes |
+- [Sionna ISAC simulation](https://github.com/OdurShi/sionna-isac-simulation) — simulation, training, and deployment tools.
+- [Cell-free AP deployment](https://github.com/OdurShi/cell-free-isac-ap-deployment) — saved experiment parameters and results.
+- [MRIME](https://github.com/OdurShi/mrime) — MATLAB optimization experiments.
+- [SBLS](https://github.com/OdurShi/sbls) — sequential label-space selection.
+- [QCV](https://github.com/OdurShi/qcv) — question-code verification.
+- [4DReSplat](https://github.com/OdurShi/4dresplat) — dynamic Gaussian scene segmentation.
 
-See each project's README for setup and usage. Dependencies and required external data differ by project. The AP deployment folder contains experiment artifacts; training source is not included.
-
-Existing project and third-party licenses remain applicable.
+The projects are maintained in the separate repositories above. Earlier source snapshots remain in `projects/` for existing links.
