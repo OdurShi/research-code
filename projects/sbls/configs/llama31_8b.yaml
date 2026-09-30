@@ -1,0 +1,53 @@
+evidence:
+  model_id: meta-llama/Llama-3.1-8B-Instruct
+  revision: main
+  tokenizer_revision: main
+  device: cuda
+  dtype: bfloat16
+  batch_size: 4
+  max_input_tokens: 128
+  long_input_max_tokens: 512
+  long_dataset_names: [20newsgroups, yahoo_answers, x_topic, dbpedia]
+  truncation_token_id: null
+  truncation_text: <trunc>
+  trust_remote_code: false
+  attn_implementation: null
+  cache_path: cache/sbls_llama.sqlite3
+  use_cache: true
+  local_files_only: false
+encoder:
+  model_id: BAAI/bge-m3
+  revision: main
+  device: cuda
+  batch_size: 32
+  cache_path: cache/sbls_llama.sqlite3
+  use_cache: true
+  trust_remote_code: false
+  local_files_only: false
+proposer:
+  model_id: Qwen/Qwen2.5-14B-Instruct
+  revision: main
+  tokenizer_revision: main
+  device: cuda
+  dtype: bfloat16
+  quantization: nf4
+  trust_remote_code: false
+  local_files_only: false
+  max_new_tokens: 512
+  max_name_tokens: 8
+  max_description_tokens: 48
+  max_example_tokens: 256
+  max_prompt_tokens: 30000
+sbls:
+  alpha: 0.05
+  residual_batch_size: 64
+  proposal_budget: 4
+  validation_horizon: 256
+  background_description: a text from the deployment domain without assuming any of the listed categories
+  exclusive_large_model_residency: true
+runtime:
+  seed: 13
+  dataset_name: generic
+  output_dir: runs/sbls_llama31_8b
+  log_every: 25
+  fail_on_invalid_likelihood: false

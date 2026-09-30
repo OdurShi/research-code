@@ -1,0 +1,27 @@
+{
+  "version": 0,
+  "root_id": "__root__",
+  "labels": [
+    {
+      "id": "payment",
+      "name": "payment",
+      "description": "questions about making or completing a payment",
+      "parent_id": null,
+      "prior": 0.3333333333333333
+    },
+    {
+      "id": "refund",
+      "name": "refund",
+      "description": "questions about a merchant refund or returned payment",
+      "parent_id": null,
+      "prior": 0.3333333333333333
+    },
+    {
+      "id": "login",
+      "name": "login",
+      "description": "questions about signing in or accessing an account",
+      "parent_id": null,
+      "prior": 0.3333333333333333
+    }
+  ]
+}

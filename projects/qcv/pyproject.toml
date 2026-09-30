@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "question-code-verification"
+version = "1.0.0"
+description = "Question-Code Verification for multimodal test-time correction"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "scikit-learn>=1.4",
+  "PyYAML>=6.0",
+  "Pillow>=10.0",
+  "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+vlm = [
+  "torch>=2.2",
+  "transformers>=4.49",
+  "accelerate>=0.28",
+  "safetensors>=0.4",
+  "imageio[ffmpeg]>=2.34",
+]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5",
+]
+
+[project.scripts]
+qcv = "qcv.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["qcv*"]
+
+[tool.setuptools.package-data]
+qcv = ["configs/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100

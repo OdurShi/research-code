@@ -1,0 +1,21 @@
+algorithm,antenna_setting,seed,directory,files,learning_rate,batch_size,net_dims,gamma
+A2C,1t1r,1,experiments/a2c/1t1r/seed-1,14,1e-05,1024,"[64, 32]",0.98
+DDPG,1t1r,1,experiments/ddpg/1t1r/seed-1,14,1e-05,512,"[64, 32]",0.98
+PPO,1t1r,1,experiments/ppo/1t1r/seed-1,14,1e-05,1024,"[64, 32]",0.98
+SAC,1t1r,1,experiments/sac/1t1r/seed-1,14,1e-05,512,"[64, 32]",0.98
+TD3,1t1r,1,experiments/td3/1t1r/seed-1,14,1e-05,512,"[64, 32]",0.98
+A2C,2t2r,128,experiments/a2c/2t2r/seed-128,14,1e-05,1024,"[64, 32]",0.98
+A2C,2t2r,1,experiments/a2c/2t2r/seed-1,14,1e-05,1024,"[64, 32]",0.98
+A2C,2t2r,256,experiments/a2c/2t2r/seed-256,14,1e-05,1024,"[64, 32]",0.98
+DDPG,2t2r,128,experiments/ddpg/2t2r/seed-128,14,1e-05,512,"[64, 32]",0.98
+DDPG,2t2r,1,experiments/ddpg/2t2r/seed-1,14,1e-05,512,"[64, 32]",0.98
+DDPG,2t2r,256,experiments/ddpg/2t2r/seed-256,14,1e-05,512,"[64, 32]",0.98
+PPO,2t2r,128,experiments/ppo/2t2r/seed-128,14,1e-05,1024,"[64, 32]",0.98
+PPO,2t2r,1,experiments/ppo/2t2r/seed-1,14,1e-05,1024,"[64, 32]",0.98
+PPO,2t2r,256,experiments/ppo/2t2r/seed-256,14,1e-05,1024,"[64, 32]",0.98
+SAC,2t2r,128,experiments/sac/2t2r/seed-128,14,1e-05,512,"[64, 32]",0.98
+SAC,2t2r,1,experiments/sac/2t2r/seed-1,14,1e-05,512,"[64, 32]",0.98
+SAC,2t2r,256,experiments/sac/2t2r/seed-256,14,1e-05,512,"[64, 32]",0.98
+TD3,2t2r,128,experiments/td3/2t2r/seed-128,14,1e-05,512,"[64, 32]",0.98
+TD3,2t2r,1,experiments/td3/2t2r/seed-1,14,1e-05,512,"[64, 32]",0.98
+TD3,2t2r,256,experiments/td3/2t2r/seed-256,14,1e-05,512,"[64, 32]",0.98

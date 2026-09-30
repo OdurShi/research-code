@@ -1,0 +1,71 @@
+task: chartqa
+version: "1.0"
+roles:
+  first_value:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 10}
+    numeric_precision: 0
+  second_value:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 10}
+    numeric_precision: 0
+  signed_difference:
+    answer_type: numeric
+    integer_range: {start: -10, stop: 10}
+    numeric_precision: 0
+  sum_value:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 20}
+    numeric_precision: 0
+  comparison:
+    answer_type: categorical
+    values: [greater, less, equal]
+rules:
+  - name: signed_difference_more
+    pattern: "how many more (?P<a>.+?) than (?P<b>.+?)(?: are there| is there| were there| was there)?"
+    target: {role: signed_difference, variable: difference_ab}
+    auxiliaries:
+      - {index: 1, text: "What is the value of {a}?", role: first_value, variable: value_a}
+      - {index: 2, text: "What is the value of {b}?", role: second_value, variable: value_b}
+      - {index: 3, text: "What is the sum of {a} and {b}?", role: sum_value, variable: sum_ab}
+      - {index: 4, text: "Is {a} greater than, less than, or equal to {b}?", role: comparison, variable: comparison_ab}
+    constraints:
+      - {kind: difference_eq, variables: [value_a, value_b, difference_ab]}
+      - {kind: sum_eq, variables: [value_a, value_b, sum_ab]}
+      - {kind: comparison_from_values, variables: [value_a, value_b, comparison_ab]}
+  - name: signed_difference_between
+    pattern: "(?:what is|calculate) the (?:signed )?difference between (?P<a>.+?) and (?P<b>.+)"
+    target: {role: signed_difference, variable: difference_ab}
+    auxiliaries:
+      - {index: 1, text: "What is the value of {a}?", role: first_value, variable: value_a}
+      - {index: 2, text: "What is the value of {b}?", role: second_value, variable: value_b}
+      - {index: 3, text: "What is the sum of {a} and {b}?", role: sum_value, variable: sum_ab}
+      - {index: 4, text: "Is {a} greater than, less than, or equal to {b}?", role: comparison, variable: comparison_ab}
+    constraints:
+      - {kind: difference_eq, variables: [value_a, value_b, difference_ab]}
+      - {kind: sum_eq, variables: [value_a, value_b, sum_ab]}
+      - {kind: comparison_from_values, variables: [value_a, value_b, comparison_ab]}
+  - name: sum_recomposition
+    pattern: "(?:what is|calculate) the sum of (?P<a>.+?) and (?P<b>.+)"
+    target: {role: sum_value, variable: sum_ab}
+    auxiliaries:
+      - {index: 1, text: "What is the value of {a}?", role: first_value, variable: value_a}
+      - {index: 2, text: "What is the value of {b}?", role: second_value, variable: value_b}
+      - {index: 3, text: "What is the signed difference between {a} and {b}?", role: signed_difference, variable: difference_ab}
+      - {index: 4, text: "Is {a} greater than, less than, or equal to {b}?", role: comparison, variable: comparison_ab}
+    constraints:
+      - {kind: sum_eq, variables: [value_a, value_b, sum_ab]}
+      - {kind: difference_eq, variables: [value_a, value_b, difference_ab]}
+      - {kind: comparison_from_values, variables: [value_a, value_b, comparison_ab]}
+  - name: comparison
+    pattern: "(?:is|was) (?P<a>.+?) (?:greater than|higher than) (?P<b>.+)"
+    target: {role: comparison, variable: comparison_ab}
+    auxiliaries:
+      - {index: 1, text: "What is the value of {a}?", role: first_value, variable: value_a}
+      - {index: 2, text: "What is the value of {b}?", role: second_value, variable: value_b}
+      - {index: 3, text: "What is the signed difference between {a} and {b}?", role: signed_difference, variable: difference_ab}
+      - {index: 4, text: "What is the sum of {a} and {b}?", role: sum_value, variable: sum_ab}
+    constraints:
+      - {kind: comparison_from_values, variables: [value_a, value_b, comparison_ab]}
+      - {kind: difference_eq, variables: [value_a, value_b, difference_ab]}
+      - {kind: sum_eq, variables: [value_a, value_b, sum_ab]}

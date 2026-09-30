@@ -1,0 +1,15 @@
+numpy>=1.26
+scipy>=1.11
+pydantic>=2.7
+PyYAML>=6.0
+typer>=0.12
+torch>=2.4
+transformers>=4.51,<5
+sentence-transformers>=3.2
+accelerate>=1.0
+safetensors>=0.4
+scikit-learn>=1.4
+pandas>=2.1
+bitsandbytes>=0.45
+matplotlib>=3.8
+pytest>=8.0

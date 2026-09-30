@@ -1,0 +1,87 @@
+task: agqa
+version: "1.0"
+roles:
+  event_count:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 10}
+    numeric_precision: 0
+  event_existence:
+    answer_type: boolean
+    values: ["yes", "no"]
+  zero_event:
+    answer_type: boolean
+    values: ["yes", "no"]
+  one_event:
+    answer_type: boolean
+    values: ["yes", "no"]
+  repeated_event:
+    answer_type: boolean
+    values: ["yes", "no"]
+  temporal_relation:
+    answer_type: relation
+    values: [before, after, overlapping]
+  inverse_temporal_relation:
+    answer_type: relation
+    values: [before, after, overlapping]
+  temporal_boolean:
+    answer_type: boolean
+    values: ["yes", "no"]
+rules:
+  - name: event_count_existence
+    pattern: "how many times did (?P<event>.+?)(?: occur| happen)?"
+    target: {role: event_count, variable: count_event}
+    auxiliaries:
+      - {index: 1, text: "Did {event} occur?", role: event_existence, variable: exists_event}
+      - {index: 2, text: "Did {event} occur zero times?", role: zero_event, variable: zero_event}
+      - {index: 3, text: "Did {event} occur exactly once?", role: one_event, variable: one_event}
+      - {index: 4, text: "Did {event} occur more than once?", role: repeated_event, variable: repeated_event}
+    constraints:
+      - {kind: exists_iff_positive, variables: [count_event, exists_event]}
+      - {kind: threshold_boolean, variables: [count_event, zero_event], parameters: {operator: eq, threshold: 0}}
+      - {kind: threshold_boolean, variables: [count_event, one_event], parameters: {operator: eq, threshold: 1}}
+      - {kind: threshold_boolean, variables: [count_event, repeated_event], parameters: {operator: gt, threshold: 1}}
+  - name: event_existence_count
+    pattern: "did (?P<event>.+?)(?: occur| happen)"
+    target: {role: event_existence, variable: exists_event}
+    auxiliaries:
+      - {index: 1, text: "How many times did {event} occur?", role: event_count, variable: count_event}
+      - {index: 2, text: "Did {event} occur zero times?", role: zero_event, variable: zero_event}
+      - {index: 3, text: "Did {event} occur exactly once?", role: one_event, variable: one_event}
+      - {index: 4, text: "Did {event} occur more than once?", role: repeated_event, variable: repeated_event}
+    constraints:
+      - {kind: exists_iff_positive, variables: [count_event, exists_event]}
+      - {kind: threshold_boolean, variables: [count_event, zero_event], parameters: {operator: eq, threshold: 0}}
+      - {kind: threshold_boolean, variables: [count_event, one_event], parameters: {operator: eq, threshold: 1}}
+      - {kind: threshold_boolean, variables: [count_event, repeated_event], parameters: {operator: gt, threshold: 1}}
+  - name: temporal_before
+    pattern: "did (?P<a>.+?) happen before (?P<b>.+)"
+    target: {role: temporal_boolean, variable: is_before}
+    auxiliaries:
+      - {index: 1, text: "What is the temporal relation of {a} to {b}?", role: temporal_relation, variable: relation_ab}
+      - {index: 2, text: "What is the temporal relation of {b} to {a}?", role: inverse_temporal_relation, variable: relation_ba}
+      - {index: 3, text: "Did {a} happen after {b}?", role: temporal_boolean, variable: is_after}
+      - {index: 4, text: "Did {a} overlap with {b}?", role: temporal_boolean, variable: is_overlap}
+    constraints:
+      - {kind: relation_boolean, variables: [relation_ab, is_before], parameters: {relation: before}}
+      - {kind: relation_boolean, variables: [relation_ab, is_after], parameters: {relation: after}}
+      - {kind: relation_boolean, variables: [relation_ab, is_overlap], parameters: {relation: overlapping}}
+      - kind: inverse_relation
+        variables: [relation_ab, relation_ba]
+        parameters:
+          inverse_map: {before: after, after: before, overlapping: overlapping}
+  - name: temporal_relation
+    pattern: "what is the temporal relation of (?P<a>.+?) to (?P<b>.+)"
+    target: {role: temporal_relation, variable: relation_ab}
+    auxiliaries:
+      - {index: 1, text: "What is the temporal relation of {b} to {a}?", role: inverse_temporal_relation, variable: relation_ba}
+      - {index: 2, text: "Did {a} happen before {b}?", role: temporal_boolean, variable: is_before}
+      - {index: 3, text: "Did {a} happen after {b}?", role: temporal_boolean, variable: is_after}
+      - {index: 4, text: "Did {a} overlap with {b}?", role: temporal_boolean, variable: is_overlap}
+    constraints:
+      - {kind: relation_boolean, variables: [relation_ab, is_before], parameters: {relation: before}}
+      - {kind: relation_boolean, variables: [relation_ab, is_after], parameters: {relation: after}}
+      - {kind: relation_boolean, variables: [relation_ab, is_overlap], parameters: {relation: overlapping}}
+      - kind: inverse_relation
+        variables: [relation_ab, relation_ba]
+        parameters:
+          inverse_map: {before: after, after: before, overlapping: overlapping}

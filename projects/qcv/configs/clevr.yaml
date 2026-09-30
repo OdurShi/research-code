@@ -1,0 +1,90 @@
+task: clevr
+version: "1.0"
+roles:
+  count:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 10}
+    numeric_precision: 0
+  complement_count:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 10}
+    numeric_precision: 0
+  total_count:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 10}
+    numeric_precision: 0
+  existence:
+    answer_type: boolean
+    values: ["yes", "no"]
+  complement_existence:
+    answer_type: boolean
+    values: ["yes", "no"]
+  spatial_relation:
+    answer_type: relation
+    values: ["left", "right", "front", "behind"]
+  inverse_spatial_relation:
+    answer_type: relation
+    values: ["left", "right", "front", "behind"]
+  relation_boolean:
+    answer_type: boolean
+    values: ["yes", "no"]
+rules:
+  - name: count_complement
+    pattern: "(?:how many|what number of) (?P<entity>.+?) (?:are there|are visible|can be seen)"
+    target: {role: count, variable: count_a}
+    auxiliaries:
+      - {index: 1, text: "Are there any {entity}?", role: existence, variable: exists_a}
+      - {index: 2, text: "How many objects are not {entity}?", role: complement_count, variable: count_not_a}
+      - {index: 3, text: "How many objects are there in total?", role: total_count, variable: count_total}
+      - {index: 4, text: "Are there any objects that are not {entity}?", role: complement_existence, variable: exists_not_a}
+    constraints:
+      - {kind: sum_eq, variables: [count_a, count_not_a, count_total]}
+      - {kind: exists_iff_positive, variables: [count_a, exists_a]}
+      - {kind: exists_iff_positive, variables: [count_not_a, exists_not_a]}
+  - name: existence_count
+    pattern: "(?:is|are) there (?:a|an|any) (?P<entity>.+)"
+    target: {role: existence, variable: exists_a}
+    auxiliaries:
+      - {index: 1, text: "How many {entity} are there?", role: count, variable: count_a}
+      - {index: 2, text: "How many objects are not {entity}?", role: complement_count, variable: count_not_a}
+      - {index: 3, text: "How many objects are there in total?", role: total_count, variable: count_total}
+      - {index: 4, text: "Are there any objects that are not {entity}?", role: complement_existence, variable: exists_not_a}
+    constraints:
+      - {kind: sum_eq, variables: [count_a, count_not_a, count_total]}
+      - {kind: exists_iff_positive, variables: [count_a, exists_a]}
+      - {kind: exists_iff_positive, variables: [count_not_a, exists_not_a]}
+  - name: spatial_inverse_categorical
+    pattern: "(?:what is the spatial relation of|what is the relation of|where is) (?P<a>.+?) (?:relative to|in relation to) (?P<b>.+)"
+    target: {role: spatial_relation, variable: relation_ab}
+    auxiliaries:
+      - {index: 1, text: "What is the spatial relation of {b} relative to {a}?", role: inverse_spatial_relation, variable: relation_ba}
+      - {index: 2, text: "Is {a} left of {b}?", role: relation_boolean, variable: is_left}
+      - {index: 3, text: "Is {a} right of {b}?", role: relation_boolean, variable: is_right}
+      - {index: 4, text: "Is {a} in front of {b}?", role: relation_boolean, variable: is_front}
+      - {index: 5, text: "Is {a} behind {b}?", role: relation_boolean, variable: is_behind}
+    constraints:
+      - kind: inverse_relation
+        variables: [relation_ab, relation_ba]
+        parameters:
+          inverse_map: {left: right, right: left, front: behind, behind: front}
+      - kind: one_hot_relations
+        variables: [relation_ab, is_left, is_right, is_front, is_behind]
+        parameters: {labels: [left, right, front, behind]}
+  - name: spatial_left_boolean
+    pattern: "is (?P<a>.+?) left of (?P<b>.+)"
+    target: {role: relation_boolean, variable: is_left}
+    auxiliaries:
+      - {index: 1, text: "What is the spatial relation of {a} relative to {b}?", role: spatial_relation, variable: relation_ab}
+      - {index: 2, text: "What is the spatial relation of {b} relative to {a}?", role: inverse_spatial_relation, variable: relation_ba}
+      - {index: 3, text: "Is {a} right of {b}?", role: relation_boolean, variable: is_right}
+      - {index: 4, text: "Is {a} in front of {b}?", role: relation_boolean, variable: is_front}
+      - {index: 5, text: "Is {a} behind {b}?", role: relation_boolean, variable: is_behind}
+    constraints:
+      - {kind: relation_boolean, variables: [relation_ab, is_left], parameters: {relation: left}}
+      - kind: inverse_relation
+        variables: [relation_ab, relation_ba]
+        parameters:
+          inverse_map: {left: right, right: left, front: behind, behind: front}
+      - kind: one_hot_relations
+        variables: [relation_ab, is_left, is_right, is_front, is_behind]
+        parameters: {labels: [left, right, front, behind]}

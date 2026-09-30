@@ -1,0 +1,73 @@
+task: gqa
+version: "1.0"
+roles:
+  count:
+    answer_type: numeric
+    integer_range: {start: 0, stop: 20}
+    numeric_precision: 0
+  existence:
+    answer_type: boolean
+    values: ["yes", "no"]
+  zero_count:
+    answer_type: boolean
+    values: ["yes", "no"]
+  one_count:
+    answer_type: boolean
+    values: ["yes", "no"]
+  multiple_count:
+    answer_type: boolean
+    values: ["yes", "no"]
+  spatial_relation:
+    answer_type: relation
+    values: [left, right, above, below, front, behind, inside, contains, overlapping]
+  inverse_spatial_relation:
+    answer_type: relation
+    values: [left, right, above, below, front, behind, inside, contains, overlapping]
+  relation_boolean:
+    answer_type: boolean
+    values: ["yes", "no"]
+rules:
+  - name: existence_count
+    pattern: "(?:is|are) there (?:a|an|any) (?P<entity>.+)"
+    target: {role: existence, variable: exists_a}
+    auxiliaries:
+      - {index: 1, text: "How many {entity} are there?", role: count, variable: count_a}
+      - {index: 2, text: "Are there zero {entity}?", role: zero_count, variable: zero_a}
+      - {index: 3, text: "Is there exactly one {entity}?", role: one_count, variable: one_a}
+      - {index: 4, text: "Are there more than one {entity}?", role: multiple_count, variable: multiple_a}
+    constraints:
+      - {kind: exists_iff_positive, variables: [count_a, exists_a]}
+      - {kind: threshold_boolean, variables: [count_a, zero_a], parameters: {operator: eq, threshold: 0}}
+      - {kind: threshold_boolean, variables: [count_a, one_a], parameters: {operator: eq, threshold: 1}}
+      - {kind: threshold_boolean, variables: [count_a, multiple_a], parameters: {operator: gt, threshold: 1}}
+  - name: count_existence
+    pattern: "(?:how many|what number of) (?P<entity>.+?) (?:are there|are visible|can be seen)"
+    target: {role: count, variable: count_a}
+    auxiliaries:
+      - {index: 1, text: "Are there any {entity}?", role: existence, variable: exists_a}
+      - {index: 2, text: "Are there zero {entity}?", role: zero_count, variable: zero_a}
+      - {index: 3, text: "Is there exactly one {entity}?", role: one_count, variable: one_a}
+      - {index: 4, text: "Are there more than one {entity}?", role: multiple_count, variable: multiple_a}
+    constraints:
+      - {kind: exists_iff_positive, variables: [count_a, exists_a]}
+      - {kind: threshold_boolean, variables: [count_a, zero_a], parameters: {operator: eq, threshold: 0}}
+      - {kind: threshold_boolean, variables: [count_a, one_a], parameters: {operator: eq, threshold: 1}}
+      - {kind: threshold_boolean, variables: [count_a, multiple_a], parameters: {operator: gt, threshold: 1}}
+  - name: spatial_inverse
+    pattern: "(?:what is the spatial relation of|what is the relation of|where is) (?P<a>.+?) (?:relative to|in relation to) (?P<b>.+)"
+    target: {role: spatial_relation, variable: relation_ab}
+    auxiliaries:
+      - {index: 1, text: "What is the spatial relation of {b} relative to {a}?", role: inverse_spatial_relation, variable: relation_ba}
+      - {index: 2, text: "Is {a} left of {b}?", role: relation_boolean, variable: is_left}
+      - {index: 3, text: "Is {a} right of {b}?", role: relation_boolean, variable: is_right}
+      - {index: 4, text: "Is {a} above {b}?", role: relation_boolean, variable: is_above}
+      - {index: 5, text: "Is {a} below {b}?", role: relation_boolean, variable: is_below}
+    constraints:
+      - kind: inverse_relation
+        variables: [relation_ab, relation_ba]
+        parameters:
+          inverse_map: {left: right, right: left, above: below, below: above, front: behind, behind: front, inside: contains, contains: inside, overlapping: overlapping}
+      - {kind: relation_boolean, variables: [relation_ab, is_left], parameters: {relation: left}}
+      - {kind: relation_boolean, variables: [relation_ab, is_right], parameters: {relation: right}}
+      - {kind: relation_boolean, variables: [relation_ab, is_above], parameters: {relation: above}}
+      - {kind: relation_boolean, variables: [relation_ab, is_below], parameters: {relation: below}}

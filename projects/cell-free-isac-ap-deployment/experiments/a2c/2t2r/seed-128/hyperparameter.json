@@ -1,0 +1,15 @@
+{
+    "learning_rate": 1e-05,
+    "batch_size": 1024,
+    "buffer_size": null,
+    "net_dims": [
+        64,
+        32
+    ],
+    "gamma": 0.98,
+    "reward_scale": 1,
+    "soft_update_tau": 0.005,
+    "clip_grad_norm": 3.0,
+    "state_value_tau": 0,
+    "horizon_len": 256
+}

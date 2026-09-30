@@ -1,0 +1,6 @@
+{"id":"1","text":"The refund arrived successfully","oracle_label":"refund"}
+{"id":"2","text":"I cannot sign in to my account","oracle_label":"login"}
+{"id":"3","text":"How do I complete this payment","oracle_label":"payment"}
+{"id":"4","text":"Dispute this unauthorized card purchase","oracle_label":"card dispute"}
+{"id":"5","text":"The card transaction was not made by me","oracle_label":"card dispute"}
+{"id":"6","text":"Reverse an unauthorized charge on my card","oracle_label":"card dispute"}
