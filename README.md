@@ -5,6 +5,7 @@ A collection of implementations and experiment artifacts for learning and experi
 | Project | Description |
 | --- | --- |
 | [Cell-free AP deployment](projects/cell-free-isac-ap-deployment) | Saved parameters, checkpoints, logs, and visualizations for access-point placement experiments |
+| [MRIME](projects/mrime) | MATLAB optimization algorithms and benchmark experiments |
 | [SBLS](projects/sbls) | Sequential label-space selection with configuration files, examples, and evaluation tools |
 | [QCV](projects/qcv) | Question compilation, calibration, selection, and decoding utilities |
 | [4DReSplat](projects/4dresplat) | Tools for language-guided segmentation in dynamic Gaussian scenes |
