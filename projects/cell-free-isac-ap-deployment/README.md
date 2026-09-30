@@ -27,3 +27,5 @@ The supplied archive contained 32 run directories. Twelve were byte-identical co
 These are saved experiment artifacts, not the training implementation. No Python/MATLAB training scripts, environment definitions, model class definitions, or dependency file were included in the supplied archive. The original implementation is required to instantiate checkpoint architectures and reproduce training. No checkpoint was executed or deserialized during preparation of this release.
 
 The CSV and JSON files can be inspected directly. NumPy numeric arrays can be inspected with `numpy.load(path, allow_pickle=False)`. Checkpoints should only be loaded in a trusted environment with the corresponding model definitions.
+
+Related reading: [paper](docs/paper.pdf).
