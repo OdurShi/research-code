@@ -4,7 +4,7 @@ Code for research projects on optimisation, wireless sensing and communication, 
 models, 3D vision and AI for science. Every project lives in its own repository with
 installation instructions, data, tests, and the commands for its experiments.
 
-Homepage: [odurshi.github.io](https://odurshi.github.io)
+Homepage: [odurshi.com](https://odurshi.com)
 
 | Project | Topic | Repository |
 |---|---|---|
