@@ -12,8 +12,8 @@ Homepage: [odurshi.com](https://odurshi.com)
 | EDECO | Educational competition optimiser with an estimation-of-distribution framework and dynamic fitness-distance balancing ([Biomimetics, 2025](https://doi.org/10.3390/biomimetics10030176)) | [edeco](https://github.com/OdurShi/edeco) |
 | Cell-free ISAC AP deployment | Reinforcement-learning access point deployment for localisation accuracy and communication rate ([ISAC workshop at ACM MobiCom '24](https://doi.org/10.1145/3636534.3698221)) | [cell-free-isac-ap-deployment](https://github.com/OdurShi/cell-free-isac-ap-deployment) |
 | Cell-free ISAC multi-agent placement and operation | Ray-traced ISAC simulator (Sionna RT), access point placement as a team game, and per-access-point mode selection for aerial targets behind buildings, compared with centralised optimisers | [cell-free-isac-multiagent](https://github.com/OdurShi/cell-free-isac-multiagent) |
-| SBLS | Sequential label-space selection for open-world classification | [sbls](https://github.com/OdurShi/sbls) |
-| QCV | Question-code verification for visual question answering | [qcv](https://github.com/OdurShi/qcv) |
+| SBLS | Sequential label-space selection for open-world classification (AAAI 2027) | [sbls](https://github.com/OdurShi/sbls) |
+| QCV | Question-code verification for visual question answering (AAAI 2027) | [qcv](https://github.com/OdurShi/qcv) |
 | SIGMA | Label-efficient adaptation to changing task guidance | [sigma](https://github.com/OdurShi/sigma) |
 | VD-OPD | View-decomposed on-policy distillation | [vd-opd](https://github.com/OdurShi/vd-opd) |
 | 4DReSplat | Reasoning segmentation in dynamic Gaussian scenes | [4dresplat](https://github.com/OdurShi/4dresplat) |
